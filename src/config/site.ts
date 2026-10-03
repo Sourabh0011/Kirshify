@@ -5,8 +5,8 @@ export const siteConfig = {
     "Kirshify is an AI-driven farm-to-consumer marketplace for Indian agriculture — direct trade, AI crop disease detection, live mandi prices and advice in your own language.",
   url: process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
   // TODO: replace with real contact details before launch.
-  contact: { email: "limitless@sourabh.info" },
-  defaultLocation: "Jabalpur, Madhya Pradesh",
+  contact: { email: "limitless@sourabh.info", phone: "[phone]" },
+  defaultLocation: "Jabalpur, Madhya Pradesh", 
 } as const;
 
 export type NavItem = { label: string; labelHi?: string; href: string };
