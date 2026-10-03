@@ -6,10 +6,14 @@ import { useState } from "react";
 import { ButtonLink } from "@/components/ui/button";
 import { Container, Section } from "@/components/ui/container";
 import { cn, formatINR } from "@/lib/utils";
+import { useLanguage } from "@/providers/language-provider";
+
+import { calculatorCopy } from "../content";
 
 export interface CalculatorCrop {
   slug: string;
   name: string;
+  nameHi?: string;
   rate: number;
 }
 
@@ -20,6 +24,9 @@ const BROKER_CUT = { low: 0.15, high: 0.2 };
 const KIRSHIFY_FEE = 0.01;
 
 export function EarningsCalculator({ crops }: { crops: CalculatorCrop[] }) {
+  const { lang } = useLanguage();
+  const t = calculatorCopy[lang];
+  const cropName = (c: CalculatorCrop) => (lang === "hi" && c.nameHi) || c.name;
   const [cropSlug, setCropSlug] = useState(crops[0]?.slug);
   const [qty, setQty] = useState(50);
   const crop = crops.find((c) => c.slug === cropSlug) ?? crops[0];
@@ -32,22 +39,20 @@ export function EarningsCalculator({ crops }: { crops: CalculatorCrop[] }) {
   const clamp = (n: number) => Math.min(MAX_QTY, Math.max(MIN_QTY, n));
 
   return (
-    <Section id="earnings">
+    <Section id="earnings" lang={lang}>
       <Container>
         <div className="relative flex flex-col gap-10 overflow-hidden rounded-[36px] bg-forest p-5 text-white sm:p-10 lg:flex-row lg:gap-14 lg:p-16">
           <div aria-hidden="true" className="absolute -bottom-80 -left-64 size-[560px] rounded-full bg-forest-600" />
 
           <div className="relative flex flex-col gap-7 lg:flex-1">
             <div className="flex flex-col gap-4">
-              <span className="eyebrow text-leaf">Earnings calculator</span>
-              <h2 className="text-display-lg text-white">See how much more you keep.</h2>
-              <p className="max-w-md text-[17px] leading-relaxed text-on-dark">
-                Pick your crop and quantity. We compare a typical broker&apos;s cut with selling on Kirshify.
-              </p>
+              <span className="eyebrow text-leaf">{t.eyebrow}</span>
+              <h2 className="text-display-lg text-balance text-white">{t.title}</h2>
+              <p className="max-w-md text-[17px] leading-relaxed text-on-dark">{t.description}</p>
             </div>
 
             <fieldset className="flex flex-col gap-3">
-              <legend className="mb-3 font-extrabold">1. Choose your crop</legend>
+              <legend className="mb-3 font-extrabold">{t.chooseCrop}</legend>
               <div className="flex flex-wrap gap-2">
                 {crops.map((c) => {
                   const selected = c.slug === crop.slug;
@@ -62,8 +67,11 @@ export function EarningsCalculator({ crops }: { crops: CalculatorCrop[] }) {
                         selected ? "border-leaf bg-leaf text-ink" : "border-deep-border text-white hover:border-leaf",
                       )}
                     >
-                      <span className="font-extrabold">{c.name}</span>
-                      <span className="text-xs font-bold opacity-80">{formatINR(c.rate)}/qtl</span>
+                      <span className="font-extrabold">{cropName(c)}</span>
+                      <span className="text-xs font-bold opacity-80">
+                        {formatINR(c.rate)}
+                        {t.perQtl}
+                      </span>
                     </button>
                   );
                 })}
@@ -72,12 +80,12 @@ export function EarningsCalculator({ crops }: { crops: CalculatorCrop[] }) {
 
             <div className="flex flex-col gap-3.5">
               <label htmlFor="calc-qty" className="font-extrabold">
-                2. How much are you selling?
+                {t.chooseQty}
               </label>
               <div className="flex items-center gap-3">
                 <button
                   type="button"
-                  aria-label="Decrease quantity"
+                  aria-label={t.decrease}
                   onClick={() => setQty((q) => clamp(q - STEP))}
                   className="inline-flex size-13 shrink-0 items-center justify-center rounded-2xl border-[1.5px] border-deep-border hover:border-leaf"
                 >
@@ -85,11 +93,11 @@ export function EarningsCalculator({ crops }: { crops: CalculatorCrop[] }) {
                 </button>
                 <output htmlFor="calc-qty" className="flex min-h-13 flex-1 items-center justify-center gap-1.5 rounded-2xl bg-[#0A3A29]">
                   <span className="font-display text-3xl font-extrabold">{qty}</span>
-                  <span className="font-bold text-on-dark-muted">quintal</span>
+                  <span className="font-bold text-on-dark-muted">{t.quintal}</span>
                 </output>
                 <button
                   type="button"
-                  aria-label="Increase quantity"
+                  aria-label={t.increase}
                   onClick={() => setQty((q) => clamp(q + STEP))}
                   className="inline-flex size-13 shrink-0 items-center justify-center rounded-2xl border-[1.5px] border-deep-border hover:border-leaf"
                 >
@@ -107,8 +115,12 @@ export function EarningsCalculator({ crops }: { crops: CalculatorCrop[] }) {
                 className="h-7 w-full cursor-pointer accent-leaf"
               />
               <div className="flex justify-between text-[12.5px] font-bold text-on-dark-muted">
-                <span>{MIN_QTY} qtl</span>
-                <span>{MAX_QTY} qtl</span>
+                <span>
+                  {MIN_QTY} {t.qtl}
+                </span>
+                <span>
+                  {MAX_QTY} {t.qtl}
+                </span>
               </div>
             </div>
           </div>
@@ -116,14 +128,15 @@ export function EarningsCalculator({ crops }: { crops: CalculatorCrop[] }) {
           <div className="relative flex flex-col gap-6 rounded-[28px] bg-white p-5 text-ink sm:p-8 lg:w-[46%]" aria-live="polite">
             <div className="flex flex-col gap-1">
               <span className="text-sm font-bold text-muted">
-                Sale value · {qty} qtl {crop.name} at {formatINR(crop.rate)}/qtl
+                {t.saleValue} · {qty} {t.qtl} {cropName(crop)} × {formatINR(crop.rate)}
+                {t.perQtl}
               </span>
               <span className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">{formatINR(sale)}</span>
             </div>
 
             <div className="flex flex-col gap-2.5">
               <div className="flex flex-wrap justify-between gap-x-3 gap-y-1">
-                <span className="font-bold text-muted">Through a broker (15–20% cut)</span>
+                <span className="font-bold text-muted">{t.broker}</span>
                 <span className="font-extrabold">
                   {formatINR(brokerKeep.low)} – {formatINR(brokerKeep.high)}
                 </span>
@@ -136,7 +149,7 @@ export function EarningsCalculator({ crops }: { crops: CalculatorCrop[] }) {
 
             <div className="flex flex-col gap-2.5">
               <div className="flex flex-wrap justify-between gap-x-3 gap-y-1 text-forest">
-                <span className="font-bold">On Kirshify (1% fee)</span>
+                <span className="font-bold">{t.kirshify}</span>
                 <span className="font-extrabold">{formatINR(kirshifyKeep)}</span>
               </div>
               <div className="relative h-4 overflow-hidden rounded-full bg-mist">
@@ -149,7 +162,7 @@ export function EarningsCalculator({ crops }: { crops: CalculatorCrop[] }) {
                 <TrendingUp className="size-6" strokeWidth={2} />
               </span>
               <span className="flex flex-col">
-                <span className="text-sm font-bold text-muted">You keep more on this sale</span>
+                <span className="text-sm font-bold text-muted">{t.extra}</span>
                 <span className="font-display text-2xl font-extrabold tracking-tight text-forest sm:text-3xl">
                   {formatINR(extra.low)} – {formatINR(extra.high)}
                 </span>
@@ -157,13 +170,10 @@ export function EarningsCalculator({ crops }: { crops: CalculatorCrop[] }) {
             </div>
 
             <ButtonLink href="/sell" size="lg" className="w-full">
-              Start selling on Kirshify
+              {t.cta}
               <ArrowRight className="size-[18px]" />
             </ButtonLink>
-            <p className="text-[12.5px] leading-relaxed text-muted">
-              Estimate compares a 15–20% broker commission with Kirshify&apos;s 1% facilitation fee, using today&apos;s APMC modal rates. It
-              excludes the further margins taken across 4–6 intermediary layers.
-            </p>
+            <p className="text-[12.5px] leading-relaxed text-muted">{t.note}</p>
           </div>
         </div>
       </Container>

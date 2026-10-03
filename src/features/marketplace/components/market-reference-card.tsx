@@ -19,7 +19,7 @@ export function MarketReferenceCard({ mandi, trend, listingPrice }: { mandi: Man
           {formatINR(mandi.modalPrice)}
           <span className="text-sm font-semibold text-muted"> /qtl</span>
         </span>
-        <span className="text-[13px] text-muted">APMC modal price · {mandi.market} mandi</span>
+        <span className="text-[13px] text-muted">Today&apos;s mandi rate · {mandi.market}</span>
       </div>
       <AreaChart data={trend} height={90} compact ariaLabel={`${mandi.cropName} price over the last 7 days`} />
       <div className="flex flex-wrap items-center justify-between gap-2 text-[13px] font-bold">

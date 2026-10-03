@@ -21,8 +21,9 @@ import { IconTile, type IconTone } from "@/components/ui/icon-tile";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { cn } from "@/lib/utils";
 import { useAdvisor } from "@/providers/advisor-provider";
+import { useLanguage } from "@/providers/language-provider";
 
-import { pillars, type PillarId } from "../content";
+import { featuresCopy, pillars, type PillarCopy, type PillarId } from "../content";
 import { FeaturePreview } from "./feature-previews";
 
 type Pillar = (typeof pillars)[number];
@@ -40,10 +41,12 @@ const pillarIcons: Record<PillarId, { icon: LucideIcon; tone: IconTone }> = {
 const HEADER_OFFSET = 96;
 
 export function FeaturesSection() {
-  // Desktop tabs always show one feature. The mobile accordion starts collapsed so all six fit on one screen.
+  // Desktop tabs always show one service. The mobile accordion starts collapsed so all six fit on one screen.
   const [active, setActive] = useState<PillarId>("marketplace");
   const [open, setOpen] = useState<PillarId | null>(null);
   const itemRefs = useRef<Partial<Record<PillarId, HTMLDivElement | null>>>({});
+  const { lang } = useLanguage();
+  const t = featuresCopy[lang];
   const pillar = pillars.find((p) => p.id === active)!;
 
   function toggle(id: PillarId) {
@@ -65,19 +68,20 @@ export function FeaturesSection() {
   }
 
   return (
-    <Section id="features" tone="sage">
+    <Section id="features" tone="sage" lang={lang}>
       <Container className="flex flex-col gap-8 sm:gap-12">
         <SectionHeading
           layout="split"
-          eyebrow="All features"
-          title="Six tools. One app, from seed to sale."
-          description="Tap a feature to see it in action. Everything a grower needs to plan, protect, price and sell a crop."
+          eyebrow={t.eyebrow}
+          title={t.title}
+          description={t.description}
         />
 
         {/* Phones & tablets: accordion — every tool visible, details open in place. */}
         <div className="flex flex-col gap-3 lg:hidden">
           {pillars.map((p) => {
             const isOpen = open === p.id;
+            const copy = t.items[p.id];
             const { icon, tone } = pillarIcons[p.id];
             return (
               <div
@@ -101,8 +105,8 @@ export function FeaturesSection() {
                   >
                     <IconTile icon={icon} tone={tone} size="sm" />
                     <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-                      <span className="text-[15.5px] leading-snug font-extrabold">{p.title}</span>
-                      <span className="text-[13.5px] leading-snug text-muted">{p.blurb}</span>
+                      <span className="text-[15.5px] leading-snug font-extrabold">{copy.title}</span>
+                      <span className="text-[13.5px] leading-snug text-muted">{copy.blurb}</span>
                     </span>
                     <span
                       aria-hidden="true"
@@ -123,11 +127,11 @@ export function FeaturesSection() {
                     aria-labelledby={`feature-${p.id}`}
                     className="flex animate-reveal flex-col gap-5 border-t border-line-soft px-4 pt-5 pb-5 sm:px-6 sm:pb-6"
                   >
-                    <PillarCopy pillar={p} compact />
+                    <PillarText copy={copy} compact />
                     <div className="sm:mx-auto sm:w-full sm:max-w-md">
                       <FeaturePreview id={p.id} />
                     </div>
-                    <PillarCta pillar={p} className="w-full sm:w-auto sm:self-start" />
+                    <PillarCta pillar={p} label={copy.cta} className="w-full sm:w-auto sm:self-start" />
                   </div>
                 )}
               </div>
@@ -137,9 +141,10 @@ export function FeaturesSection() {
 
         {/* Desktop: tab list + large preview panel. */}
         <div className="hidden gap-6 lg:flex">
-          <div role="tablist" aria-label="Kirshify features" aria-orientation="vertical" className="flex w-[360px] shrink-0 flex-col gap-2.5">
+          <div role="tablist" aria-label={t.tabsLabel} aria-orientation="vertical" className="flex w-[360px] shrink-0 flex-col gap-2.5">
             {pillars.map((p) => {
               const selected = p.id === active;
+              const copy = t.items[p.id];
               return (
                 <button
                   key={p.id}
@@ -166,8 +171,8 @@ export function FeaturesSection() {
                     {p.n}
                   </span>
                   <span className="flex flex-1 flex-col gap-0.5">
-                    <span className="font-extrabold">{p.title}</span>
-                    <span className={cn("text-[13.5px]", selected ? "text-on-dark-muted" : "text-muted")}>{p.blurb}</span>
+                    <span className="font-extrabold">{copy.title}</span>
+                    <span className={cn("text-[13.5px]", selected ? "text-on-dark-muted" : "text-muted")}>{copy.blurb}</span>
                   </span>
                   <ChevronRight className={cn("size-[18px] shrink-0", !selected && "opacity-35")} strokeWidth={2.2} />
                 </button>
@@ -182,8 +187,8 @@ export function FeaturesSection() {
             className="flex min-w-0 flex-1 gap-8 rounded-[28px] border border-line bg-white p-11"
           >
             <div className="flex flex-1 flex-col gap-5">
-              <PillarCopy pillar={pillar} />
-              <PillarCta pillar={pillar} className="mt-auto self-start" />
+              <PillarText copy={t.items[pillar.id]} n={pillar.n} />
+              <PillarCta pillar={pillar} label={t.items[pillar.id].cta} className="mt-auto self-start" />
             </div>
             <div className="w-[46%] shrink-0">
               <FeaturePreview id={pillar.id} />
@@ -195,22 +200,22 @@ export function FeaturesSection() {
   );
 }
 
-function PillarCopy({ pillar, compact = false }: { pillar: Pillar; compact?: boolean }) {
+function PillarText({ copy, n, compact = false }: { copy: PillarCopy; n?: string; compact?: boolean }) {
   return (
     <>
       {!compact && (
         <span className="self-start rounded-full bg-sage px-3 py-1.5 text-[13px] font-extrabold text-forest">
-          {pillar.n} · {pillar.tag}
+          {n} · {copy.title}
         </span>
       )}
       {compact ? (
-        <p className="font-display text-[22px] leading-tight font-bold tracking-tight text-balance">{pillar.heading}</p>
+        <p className="font-display text-[22px] leading-tight font-bold tracking-tight text-balance">{copy.heading}</p>
       ) : (
-        <h3 className="text-display-md">{pillar.heading}</h3>
+        <h3 className="text-display-md">{copy.heading}</h3>
       )}
-      <p className="leading-relaxed text-muted">{pillar.description}</p>
+      <p className="leading-relaxed text-muted">{copy.description}</p>
       <ul className="flex flex-col gap-3">
-        {pillar.bullets.map((b) => (
+        {copy.bullets.map((b) => (
           <li key={b} className="flex items-start gap-3 text-[15.5px] leading-normal">
             <span className="mt-0.5 inline-flex size-[22px] shrink-0 items-center justify-center rounded-full bg-leaf-soft text-forest">
               <Check className="size-3.5" strokeWidth={3} />
@@ -223,20 +228,20 @@ function PillarCopy({ pillar, compact = false }: { pillar: Pillar; compact?: boo
   );
 }
 
-function PillarCta({ pillar, className }: { pillar: Pillar; className?: string }) {
+function PillarCta({ pillar, label, className }: { pillar: Pillar; label: string; className?: string }) {
   const { openAdvisor } = useAdvisor();
   const content = (
     <>
-      {pillar.cta.label}
+      {label}
       <ArrowRight className="size-4" />
     </>
   );
-  return pillar.cta.advisor ? (
+  return pillar.advisor ? (
     <Button size="lg" className={className} onClick={() => openAdvisor()}>
       {content}
     </Button>
   ) : (
-    <ButtonLink size="lg" href={pillar.cta.href!} className={className}>
+    <ButtonLink size="lg" href={pillar.href!} className={className}>
       {content}
     </ButtonLink>
   );

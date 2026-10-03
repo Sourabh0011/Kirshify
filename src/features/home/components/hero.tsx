@@ -6,7 +6,7 @@ import { HomeScreen, PhoneFrame } from "@/components/mockups/phone";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { cn } from "@/lib/utils";
-import { useLanguage } from "@/providers/language-provider";
+import { useLanguage, type Language } from "@/providers/language-provider";
 
 import { heroCopy } from "../content";
 import { QuickActions } from "./quick-actions";
@@ -51,7 +51,7 @@ export function Hero() {
             </ul>
           </div>
 
-          <HeroVisual />
+          <HeroVisual cards={t.cards} lang={lang} />
         </div>
 
         <QuickActions />
@@ -60,9 +60,9 @@ export function Hero() {
   );
 }
 
-function HeroVisual() {
+function HeroVisual({ cards, lang }: { cards: (typeof heroCopy)[Language]["cards"]; lang: Language }) {
   return (
-    <div className="relative flex min-h-[580px] items-center justify-center overflow-hidden rounded-[36px] bg-forest px-5 py-8 sm:min-h-[620px] lg:min-h-[660px]">
+    <div lang={lang} className="relative flex min-h-[580px] items-center justify-center overflow-hidden rounded-[36px] bg-forest px-5 py-8 sm:min-h-[620px] lg:min-h-[660px]">
       <div aria-hidden="true" className="absolute -right-64 -bottom-72 size-[640px] rounded-full bg-forest-600" />
       <div aria-hidden="true" className="absolute -right-36 -bottom-48 size-[420px] rounded-full bg-forest-500" />
       <div aria-hidden="true" className="absolute -top-40 -left-40 size-[360px] rounded-full bg-forest-700" />
@@ -76,9 +76,9 @@ function HeroVisual() {
           <ShoppingBag className="size-5" strokeWidth={1.9} />
         </span>
         <span className="flex flex-col">
-          <span className="text-xs font-bold text-muted">New direct offer</span>
-          <span className="text-sm font-extrabold">Onion · 120 qtl</span>
-          <span className="text-[12.5px] font-bold text-forest">₹1,480/qtl · No broker</span>
+          <span className="text-xs font-bold text-muted">{cards.offer}</span>
+          <span className="text-sm font-extrabold">{cards.offerCrop}</span>
+          <span className="text-[12.5px] font-bold text-forest">{cards.offerPrice}</span>
         </span>
       </div>
 
@@ -88,19 +88,19 @@ function HeroVisual() {
             <Leaf className="size-5" strokeWidth={1.9} />
           </span>
           <span className="flex flex-col">
-            <span className="text-sm font-extrabold">Early Blight</span>
-            <span className="text-xs font-semibold text-muted">94% confidence</span>
+            <span className="text-sm font-extrabold">{cards.disease}</span>
+            <span className="text-xs font-semibold text-muted">{cards.sure}</span>
           </span>
         </div>
         <div className="h-1.5 overflow-hidden rounded-full bg-line-soft">
           <div className="h-full w-[94%] rounded-full bg-forest" />
         </div>
-        <span className="text-xs leading-snug text-ink-soft">Organic fix: neem oil spray, 3-day interval</span>
+        <span className="text-xs leading-snug text-ink-soft">{cards.remedy}</span>
       </div>
 
       <div className="absolute bottom-10 left-5 z-20 flex flex-col rounded-2xl bg-leaf px-4 py-3.5 text-ink shadow-float">
         <span className="font-display text-3xl leading-none font-extrabold tracking-tight">+35–40%</span>
-        <span className="text-[12.5px] font-bold">margin back to the farmer</span>
+        <span className="text-[12.5px] font-bold">{cards.gain}</span>
       </div>
     </div>
   );

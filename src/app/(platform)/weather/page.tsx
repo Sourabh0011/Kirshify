@@ -77,7 +77,7 @@ export default async function WeatherPage() {
           <section className="flex items-start gap-3.5 rounded-3xl bg-leaf-soft p-5">
             <IconTile icon={Sparkles} tone="white" size="sm" />
             <span className="flex flex-col gap-1">
-              <span className="text-sm font-extrabold text-forest">AI advisory</span>
+              <span className="text-sm font-extrabold text-forest">Farming advice</span>
               <span lang="hi" className="text-[15px] leading-relaxed font-semibold text-forest">{tip.text}</span>
               <span className="text-[13px] text-muted">{tip.translation}</span>
             </span>

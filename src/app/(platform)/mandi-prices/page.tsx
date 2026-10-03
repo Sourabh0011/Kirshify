@@ -45,7 +45,7 @@ export default async function MandiPricesPage({ searchParams }: { searchParams: 
       <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div className="flex flex-col gap-1">
           <h1 className="font-display text-3xl font-extrabold tracking-tight">Mandi prices</h1>
-          <p className="text-muted">Live mandi rates from Agmarknet. Compare and make better decisions.</p>
+          <p className="text-muted">Today&apos;s rates from government mandis (source: Agmarknet). Compare mandis before you sell.</p>
         </div>
         <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-muted">
           <Clock className="size-4" />

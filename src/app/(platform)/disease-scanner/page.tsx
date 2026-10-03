@@ -10,8 +10,8 @@ export default function DiseaseScannerPage() {
     <ComingSoon
       icon={ScanLine}
       title="AI Crop Doctor"
-      description="Snap a photo of a sick leaf and get a diagnosis with a confidence score and organic-first remedies. Connects to the ResNet-50 / MobileNet inference service (FastAPI)."
-      features={["Camera capture or photo upload", "Disease name with confidence score", "Organic-first treatment guide", "Scan history per field"]}
+      description="Take a photo of a sick leaf to find out the likely disease, how sure the result is, and safe, organic-first remedies."
+      features={["Take a photo or upload one", "Disease name and how sure the result is", "Step-by-step organic treatment", "Past scans for each field"]}
       cta={{ label: "See how it works", href: "/#features" }}
     />
   );

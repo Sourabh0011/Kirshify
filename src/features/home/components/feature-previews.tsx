@@ -127,9 +127,9 @@ function MandiPreview() {
   return (
     <Panel>
       <div className="flex items-center justify-between px-1">
-        <span className="font-extrabold">Today&apos;s APMC rates</span>
+        <span className="font-extrabold">Today&apos;s mandi rates</span>
         <span className="inline-flex items-center gap-1 text-xs font-bold text-muted">
-          <RefreshCw className="size-3.5" /> Agmarknet sync
+          <RefreshCw className="size-3.5" /> Updated today
         </span>
       </div>
       <div className="overflow-hidden rounded-2xl bg-white">
@@ -206,7 +206,7 @@ function PoolingPreview() {
   return (
     <Panel>
       <div className="flex items-center justify-between px-1 pb-1.5">
-        <span className="font-extrabold">Available in your cluster</span>
+        <span className="font-extrabold">Available near you</span>
         <span className="text-[12.5px] font-bold text-muted">Within 5 km</span>
       </div>
       {pool.map((p) => (

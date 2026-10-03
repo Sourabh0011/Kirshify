@@ -1,80 +1,71 @@
-import { Check, Leaf, TrendingDown, X } from "lucide-react";
+"use client";
 
-import { Container, Section } from "@/components/ui/container";
-import { IconTile } from "@/components/ui/icon-tile";
-import { SectionHeading } from "@/components/ui/section-heading";
+import { ArrowRight, Gift, IndianRupee, Languages, Leaf, Scale, Smartphone, type LucideIcon } from "lucide-react";
 
-import { comparisonRows } from "../content";
+import { HomeScreen, MarketScreen, PhoneFrame, ScanScreen } from "@/components/mockups/phone";
+import { ButtonLink } from "@/components/ui/button";
+import { Container } from "@/components/ui/container";
+import { useLanguage } from "@/providers/language-provider";
+
+import { whyCopy } from "../content";
+
+const pointIcons: LucideIcon[] = [IndianRupee, Gift, Languages, Smartphone, Scale, Leaf];
 
 export function WhyKirshify() {
-  return (
-    <Section tone="sage">
-      <Container className="flex flex-col gap-10 sm:gap-12">
-        <SectionHeading eyebrow="Why Kirshify" title="1% instead of 15–20%. And a lot more in return." />
+  const { lang } = useLanguage();
+  const t = whyCopy[lang];
 
-        <div className="flex flex-col gap-5 lg:flex-row">
-          <div className="relative overflow-x-auto rounded-[28px] border border-line bg-white lg:flex-[1.3]">
-            <table className="w-full min-w-[480px] text-left">
-              <caption className="sr-only">Kirshify compared with a traditional mandi broker</caption>
-              <thead className="bg-mist text-[13px] font-extrabold tracking-wide text-muted uppercase">
-                <tr>
-                  <th scope="col" className="px-5 py-4 sm:px-6">What you get</th>
-                  <th scope="col" className="px-3 py-4 text-center">Mandi broker</th>
-                  <th scope="col" className="px-3 py-4 text-center text-forest">Kirshify</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-line-soft text-[15.5px] font-semibold">
-                {comparisonRows.map((row) => (
-                  <tr key={row}>
-                    <th scope="row" className="px-5 py-4 font-semibold sm:px-6">{row}</th>
-                    <td className="px-3 py-4">
-                      <span className="mx-auto flex size-8 items-center justify-center rounded-full bg-mist text-subtle">
-                        <X className="size-4" strokeWidth={2.6} />
-                        <span className="sr-only">No</span>
-                      </span>
-                    </td>
-                    <td className="px-3 py-4">
-                      <span className="mx-auto flex size-8 items-center justify-center rounded-full bg-forest text-white">
-                        <Check className="size-4" strokeWidth={3} />
-                        <span className="sr-only">Yes</span>
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-                <tr className="bg-mist">
-                  <th scope="row" className="px-5 py-5 font-bold sm:px-6">What it costs you</th>
-                  <td className="px-3 py-5 text-center text-lg font-extrabold text-marigold-ink">15–20%</td>
-                  <td className="px-3 py-5 text-center">
-                    <span className="rounded-full bg-forest px-3 py-1.5 font-extrabold text-white">1%</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+  return (
+    <section id="why" className="relative overflow-hidden bg-deep py-18 text-white sm:py-24" lang={lang}>
+      <div aria-hidden="true" className="absolute -top-80 -right-72 size-[720px] rounded-full bg-[#0D3A2A]" />
+      <Container className="relative grid items-center gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-14">
+        <div className="relative hidden h-[600px] items-center justify-center lg:flex">
+          <PhoneFrame className="absolute top-14 left-0 scale-[0.8] -rotate-6 opacity-95">
+            <MarketScreen />
+          </PhoneFrame>
+          <PhoneFrame className="relative z-10 scale-95">
+            <ScanScreen />
+          </PhoneFrame>
+          <PhoneFrame className="absolute top-14 right-0 scale-[0.8] rotate-6 opacity-95">
+            <HomeScreen />
+          </PhoneFrame>
+        </div>
+
+        <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-4">
+            <span className="eyebrow text-leaf">{t.eyebrow}</span>
+            <h2 className="text-display-lg text-balance text-white">{t.title}</h2>
+            <p className="max-w-lg text-[17px] leading-relaxed text-on-dark">{t.description}</p>
           </div>
 
-          <div className="flex flex-col gap-4 lg:flex-1">
-            <div className="flex flex-1 flex-col justify-between gap-4 rounded-[28px] bg-forest p-7 text-white">
-              <span className="eyebrow text-leaf">Farmer profit surge</span>
-              <span className="font-display text-7xl leading-[0.9] font-extrabold tracking-[-0.05em] sm:text-8xl">35–40%</span>
-              <span className="leading-relaxed text-on-dark">Direct margin recovered by cutting out 4–6 layers of intermediaries.</span>
-            </div>
-            <div className="flex items-start gap-4 rounded-[22px] bg-white p-5">
-              <IconTile icon={TrendingDown} tone="leaf" size="sm" />
-              <span className="flex flex-col gap-1">
-                <span className="font-extrabold">Less post-harvest wastage</span>
-                <span className="text-[14.5px] leading-normal text-muted">Real-time buyer matching moves produce before it spoils in transit or storage.</span>
-              </span>
-            </div>
-            <div className="flex items-start gap-4 rounded-[22px] bg-white p-5">
-              <IconTile icon={Leaf} tone="leaf" size="sm" />
-              <span className="flex flex-col gap-1">
-                <span className="font-extrabold">Healthier soil</span>
-                <span className="text-[14.5px] leading-normal text-muted">Organic-first remedies over blanket pesticide use, cutting chemical runoff.</span>
-              </span>
-            </div>
+          <ul className="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2">
+            {t.points.map((point, i) => {
+              const Icon = pointIcons[i];
+              return (
+                <li key={point.title} className="flex items-start gap-3.5">
+                  <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-leaf text-ink">
+                    <Icon aria-hidden="true" className="size-[22px]" strokeWidth={2} />
+                  </span>
+                  <span className="flex flex-col gap-1">
+                    <span className="text-[17px] leading-snug font-extrabold">{point.title}</span>
+                    <span className="text-[14.5px] leading-normal text-on-dark-muted">{point.body}</span>
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+
+          <div className="flex flex-wrap gap-3">
+            <ButtonLink href="/sell" variant="accent" size="lg">
+              {t.primary}
+              <ArrowRight className="size-[18px]" />
+            </ButtonLink>
+            <ButtonLink href="/marketplace" variant="on-dark" size="lg">
+              {t.secondary}
+            </ButtonLink>
           </div>
         </div>
       </Container>
-    </Section>
+    </section>
   );
 }

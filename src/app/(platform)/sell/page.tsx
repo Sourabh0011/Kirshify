@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 const tips = [
   { icon: Camera, title: "Add clear photos", body: "Good light, one close-up of the grain and one of the full lot." },
-  { icon: IndianRupee, title: "Price near the mandi rate", body: "Pricing close to today's APMC rate helps buyers decide quickly." },
+  { icon: IndianRupee, title: "Price near the mandi rate", body: "Pricing close to today's mandi rate helps buyers decide quickly." },
   { icon: Languages, title: "Need help?", body: "Ask the advisor in Hindi, Marathi, Punjabi or English." },
 ];
 

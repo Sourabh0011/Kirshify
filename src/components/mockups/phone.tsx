@@ -69,7 +69,7 @@ export function HomeScreen() {
         </div>
         <div className="flex flex-col gap-1.5 rounded-2xl border border-line-soft bg-white px-3 py-3">
           <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-forest">
-            <Mic className="size-3.5" strokeWidth={2} /> AI Advisory · हिंदी
+            <Mic className="size-3.5" strokeWidth={2} /> Today&apos;s tip · हिंदी
           </span>
           <span lang="hi" className="text-[13.5px] leading-normal font-semibold">
             अगले 3 दिन बारिश की संभावना — कटाई टालें
@@ -105,7 +105,7 @@ export function MarketScreen() {
   return (
     <>
       <div className="flex flex-1 flex-col gap-2.5 px-4 pt-[22px]">
-        <span className="font-display text-lg font-bold tracking-tight">P2P Marketplace</span>
+        <span className="font-display text-lg font-bold tracking-tight">Marketplace</span>
         <span className="rounded-xl border border-line-soft bg-white px-3 py-2 text-[11px] text-subtle">Search crops, e.g. soybean…</span>
         {marketRows.map((row) => (
           <div key={row.slug} className="flex items-center gap-2.5 rounded-2xl bg-white p-2">

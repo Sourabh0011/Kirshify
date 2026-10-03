@@ -11,7 +11,7 @@ export default function ProfilePage() {
       icon={UserRound}
       title="Your profile"
       description="Your farm details, verification status and language preferences."
-      features={["Farm size, crops and village", "KYC and verification badge", "Preferred language for advice", "FPO membership"]}
+      features={["Farm size, crops and village", "KYC and verification badge", "Preferred language for advice"]}
     />
   );
 }
