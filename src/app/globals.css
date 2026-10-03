@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   Kirshify design tokens — "Field Ledger"
+   Forest green ground, lime accent, marigold harvest highlight.
+---------------------------------------------------------------- */
+@theme {
+  --color-ink: #0c2318;
+  --color-ink-soft: #26392f;
+  --color-muted: #4a5e54;
+  --color-subtle: #6b7d73;
+  --color-on-dark: #d7e5dc;
+  --color-on-dark-muted: #b9ccc1;
+
+  --color-forest: #0f4d36;
+  --color-forest-600: #13603f;
+  --color-forest-500: #1a7048;
+  --color-forest-700: #0c4230;
+  --color-deep: #0a2e21;
+  --color-deep-line: #1e4a39;
+  --color-deep-border: #3e6b58;
+
+  --color-leaf: #a8e05f;
+  --color-leaf-soft: #e3efd9;
+  --color-marigold: #f4a93c;
+  --color-marigold-soft: #fdf0db;
+  --color-marigold-ink: #7a4700;
+
+  --color-sage: #eff4ec;
+  --color-mist: #f5f8f3;
+  --color-line: #dde6df;
+  --color-line-soft: #e6ece7;
+
+  --color-sky-soft: #e6eef7;
+  --color-sky-ink: #24456e;
+  --color-rose-soft: #f6e3e9;
+  --color-rose-ink: #7a2442;
+  --color-plum-soft: #eee8f6;
+  --color-plum-ink: #4b2c7a;
+  --color-mint-soft: #ddf1ea;
+  --color-mint-ink: #0e5a47;
+  --color-danger: #b42318;
+  --color-danger-soft: #fdecea;
+
+  --font-sans: var(--font-manrope), var(--font-devanagari), var(--font-gurmukhi), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-devanagari), ui-sans-serif, system-ui, sans-serif;
+  --font-hindi: var(--font-devanagari), var(--font-manrope), sans-serif;
+
+  --shadow-card: 0 24px 60px rgb(12 35 24 / 0.08);
+  --shadow-float: 0 18px 40px rgb(3 20 12 / 0.28);
+
+  --animate-marquee: marquee 70s linear infinite;
+  --animate-scan: scan 3.2s ease-in-out infinite;
+  --animate-reveal: reveal 0.28s ease-out;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes scan {
+    0%, 100% { top: 12%; }
+    50% { top: 82%; }
+  }
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+/* Display type scale */
+@utility text-display-hero {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 6.2vw, 5.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+}
+@utility text-display-lg {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+@utility text-display-md {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+@utility eyebrow {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: #ffffff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  [lang="hi"] {
+    font-family: var(--font-hindi);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-marigold);
+    outline-offset: 3px;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  section[id] {
+    scroll-margin-top: 5.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
